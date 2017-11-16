@@ -1,0 +1,427 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- Configuration for the default package. -->
+
+    <package name="session" extends="struts-default,json-default">
+        <action name="Login" class="com.Action.UserLogin_Action" method="Fun_Login">
+            <result name="salesCounterUser">/user_jsp/home.jsp</result>
+            <result name="counterBlocked">/index-login.jsp</result>
+            <result name="cashCounterUser">/cashbill/cashbill-home.jsp</result>
+            <result name="genericCounter">/user_jsp/genericHomePage.jsp</result>
+            <result name="userSessionExits">/exitingSessionPage.jsp</result>
+            <result name="Invaiduser">/login-failure.jsp</result>
+            <result name="onlineuser">/userAlive.jsp</result>
+        </action>
+                
+        <!--GENERIC COUNTER CHANGE-->
+        <action name="sendGenericSelectedCounterName" class="com.Action.UserLogin_Action" method="applyChangedCounterType">
+            <result type="json"></result>
+        </action>
+        <!--GENERIC COUNTER CHANGE-->
+        
+        <!--SUPER ADMIN ACTIONS-->
+        <action name="superLoginAction" class="com.superadmin.SuperAdminLogin" method="superLoginCheck">
+            <result name="valid">/admin_pages/index_admin.jsp</result>
+            <result name="invalid">/admin_pages/super-login-failure.jsp</result>
+        </action>
+        
+        <action name="userDetailaction" class="com.superadmin.UserDetail" method="genUserDetails">
+            <result type="json"></result>
+        </action>
+        
+        <action name="createNewCounterUser" class="com.superadmin.CreateNewCounterUser" method="createCounterUser">
+            <result type="json"></result>
+        </action>
+        
+        <action name="superAdminLogout" class="com.superadmin.SuperAdminLogin" method="adminLogout">
+            <result type="json"></result>
+        </action>
+        
+        <!--SUPER ADMIN ACTIONS-->
+        
+        
+        <!--PASSWORD RESETTING ACTIONS-->
+        <action name="userPasswordReset" class="com.Action.UserLogin_Action" method="userPasswordResetProcess">
+            <result type="json"></result>
+        </action>
+        
+        <action name="passwordSecurityQuestions" class="com.Action.Common_Action" method="loadPasswordSecurityQuestions">
+            <result type="json"></result>
+        </action>
+        
+        <action name="checkPasswordRefreshed" class="com.Action.UserLogin_Action" method="isPasswordRefreshed">
+            <result type="json"></result>
+        </action>
+        
+        <!--PASSWORD RESETTING ACTIONS-->
+        
+        <!--REPORTS-->
+        <action name="dcsrPdf" class="com.report.pdf.Dcsr" method="GenerateDcsrPdf">
+            <result type="json"></result>
+        </action>
+        
+        <action name="cashBillRecordFromTo" class="com.Action.CashBill.CashBillSummary" method="assignInputValues">
+            <result name="success">cashbill/cashbill-summary-report.jsp</result>
+        </action>
+        
+        <action name="dailyCashReport" class="com.Action.CashBill.DailyCashReport" method="DailyReportProcess">
+            <result type="json"></result>
+        </action>
+        
+        <action name="CounterRecordFromTo" class="com.Action.CounterReport.CounterBillSummary" method="setFilterParameters">
+            <result name="success">user_jsp/counter-summary-report.jsp</result>
+        </action>
+        
+        <action name="CraftWiseCounterReports" class="com.Action.CounterReport.CounterBillSummary" method="CraftWiseCounterReports">
+            <result name="success">user_jsp/counter-summary-report-view.jsp</result>
+        </action>
+        <action name="CraftWiseCounterReportView" class="com.Action.CounterReport.CounterBillSummary" method="counterSummaryGrid">
+            <result type="json"></result>
+        </action>
+        
+        <action name="dailyCounterReportToExcel" class="com.Action.CounterReport.DailyCounterTransExcel" method="exportCounterTransToExcel" >
+            <result type="json"></result>
+        </action>
+        
+        <!--REPORTS-->
+        
+        <action name="validateBranchId" class="com.Action.Common_Action" method="validateBranchNumber">
+            <result type="json"></result>
+        </action>
+        
+        <action name="fillBranchCounter" class="com.Action.Common_Action" method="Fun_loadBranchCounter">
+            <result type="json"></result>
+        </action>
+        <!--CRAFT GROUPS-->
+        <action name="getCraftGroups" class="com.Action.Common_Action" method="loadCraftGrpNames">
+            <result type="json"></result>
+        </action>
+        <!--CRAFT GROUPS-->
+        
+        <action name="SessionName" class="com.Action.UserLogin_Action" method="Fun_ChkSession">
+            <result type="json"></result>
+        </action>
+        
+        <action name="SessionClear" class="com.Action.UserLogin_Action" method="Fun_ClearSession">
+            <result type="json"></result>
+        </action>
+        
+        <action name="disCuntAuthe" class="com.Action.Common_Action" method="Fun_DiscuntAuthe">
+            <result type="json"></result>
+        </action>
+        
+        <!--LOADING PAYMENT TYPES -->
+        <action name="paymentType" class="com.Action.Common_Action" method="Fun_FillPaymentType">
+            <result type="json"></result>
+        </action>
+        <!--LOADING PAYMENT TYPES -->
+        
+        <!--LOADING REPORT TYPES -->
+        <action name="loadingReportTypes" class="com.Action.Common_Action" method="loadReportType">
+            <result type="json"></result>
+        </action>
+        
+        <action name="loadCraftGroups" class="com.Action.Common_Action" method="loadCraftGroup">
+            <result type="json"></result>
+        </action>
+        
+        <action name="getVendorNos" class="com.Action.Common_Action" method="loadVendorNumbers">
+            <result type="json"></result>
+        </action>
+        
+        <action name="loadSalesIntimationTypes" class="com.Action.Common_Action" method="getSalesIntimationTypes">
+            <result type="json"></result>
+        </action>
+        <!--LOADING REPORT TYPES -->
+        <action name="validateMaterialId" class="com.Action.UserLogin_Action" method="checkMaterial">
+            <result type="json"></result>
+        </action>
+        
+        <action name="validateVendor" class="com.Action.Common_Action" method="checkVendor">
+            <result type="json"></result>
+        </action>
+        <!--SANDALWOOD FUNCTIONALITIES-->
+        <action name="sandalWoodValidateMaterial" class="com.sandalWood.SandalWood_Action" method="validateSwMaterial">
+            <result type="json"></result>
+        </action>
+        
+        <action name="sandalWoodValidateVendor" class="com.sandalWood.SandalWood_Action" method="validateSwVendor">
+            <result type="json"></result>
+        </action>
+        
+        <action name="fetchSwDetails" class="com.sandalWood.SandalWood_Action" method="sandalWoodMaterialDetails">
+            <result type="json"></result>
+        </action>
+        
+        <!--SANDALWOOD FUNCTIONALITIES-->
+        <action name="loadPurchaseProductDetails" class="com.Action.Fill_Purchase_Product_Action" method="Fun_PurchaseDetials">
+            <result type="json"></result>
+        </action>
+        
+        <action name="rePrint" class="com.Action.Inserting_Purchase_Product" method="Fun_ReprintBil">
+            <result type="json"></result>
+        </action>
+        
+        <action name="validDateCashBillNo" class="com.Action.CashBill.getCounterBillandAmt" method="validDateCashBillNo">
+            <result type="json"></result>
+        </action>
+        
+        <action name="insCustomerData" class="com.Action.Insert_Customer_Info" method="storeCustomerInfo">
+            <result type="json"></result>
+        </action>
+        
+        <action name="PostingPurchaseProd" class="com.Action.Inserting_Purchase_Product" method="Fun_InsertPurchaseProd">
+            <result type="json"></result>
+        </action>
+        
+        <action name="CheckProcesStatus" class="com.Action.Inserting_Purchase_Product" method="Fun_StatusValue">
+            <result type="json"></result>
+        </action>
+        
+        <action name="InsCustomerInfo" class="com.Action.Insert_Customer_Info" method="Fun_InsertCustomerInfo">
+            <result type="json"></result>
+        </action>
+        
+        <action name="salesHistoryGrid" class="com.Action.SalsHistory_Action" method="Fun_FillsalesHistory">
+            <result type="json"></result>
+        </action>
+        
+        <action name="cancelReasonTypes" class="com.Action.Cancelling_Reason" method="fillCancelReasonTypes">
+            <result type="json"></result>
+        </action>
+        
+        <!--CASH-BILL FUNCTIONALITIES-->
+        
+        <!--
+            LOADING ACTIVE CASHIER NAMES FOR BACK DATED POSTING (TEMP-BLOCKED)15.04.2015
+            <action name="getCashierNames" class="com.Action.Common_Action" method="loadingCashierName">
+                <result type="json"></result>
+            </action>
+        -->
+        <action name="isCounterBillProcessed" class="com.Action.CashBill.getCounterBillandAmt" method="counterBillProcessedStatus">
+            <result type="json"></result>
+        </action>
+        
+        <action name="cashbillBillNo" class="com.Action.CashBill.getCounterBillandAmt" method="cashbillBillNoFunction">
+            <result type="json"></result>
+        </action>
+        
+        <action name="getCounterBillNoAmt" class="com.Action.CashBill.getCounterBillandAmt" method="fetchCounterBillNoAmt">
+            <result type="json"></result>
+        </action>
+        
+        <action name="pushCashBillValue" class="com.Action.CashBill.getCounterBillandAmt" method="insertCashBillValuesToDb">
+            <result type="json"></result>
+        </action>
+        
+        <action name="cbdrTotal" class="com.Action.CashBill.CashDailySummaryView" method="getTotBilNoandAmt">
+            <result type="json"></result>
+        </action>
+        
+        <action name="counterBillNoCancelStatus" class="com.Action.CashBill.cancelSalesOrder" method="salesOrderCancelStatus">
+            <result type="json"></result>
+        </action>
+        
+        <action name="cancelSalesOrderNo" class="com.Action.CashBill.cancelSalesOrder" method="cancelSalesOrderDetail">
+            <result type="json"></result>
+        </action>
+        
+        <action name="fetchingSalesOrderDetailsCashbill" class="com.Action.CashBill.salesOrderDetails" method="fetchSalesOrderDetails">
+            <result name="success">/util/sales-details.jsp</result>
+        </action>
+        
+        <action name="getCashBillSummaryDetails" class="com.Action.CashBill.CashBillSummary" method="CashBillSummaryData">
+            <result type="json"></result>
+        </action>
+        
+        <action name="getCounterBillSummaryDetails" class="com.Action.CounterReport.CounterBillSummary" method="getCounterSummaryData">
+            <result type="json"></result>
+        </action>
+        
+        <action name="getCounterSummaryTotal" class="com.Action.CounterReport.CounterBillSummary" method="showSummarySum">
+            <result type="json"></result>
+        </action>
+        
+        <action name="getCashSummaryTotal" class="com.Action.CashBill.CashBillSummary" method="getCashSummaryTotal">
+            <result type="json"></result>
+        </action>
+        
+        <!---
+        <action name="exportCWSR" class="com.Action.CashBill.CashDailySummaryView" method="exportCWSRToExcel">
+            <result type="json"></result>
+        </action>
+        -->
+        
+        <!--COUPON DETAILS FUNCTIONALITIES  -->
+        <action name="creatCouponDetails" class="com.coupon.CouponCreation" method="insCouponCreationDetails">
+            <result type="json"></result>
+        </action>
+
+        <action name="couponTypesList" class="com.coupon.CouponCreation" method="couponTypes">
+            <result type="json"></result>
+        </action>
+
+        <action name="couponDetails" class="com.coupon.CouponCreation" method="listingCouponDetailsFromTo">
+            <result name="success">/util/coupon-details-list.jsp</result>
+        </action>
+
+        <action name="sellCoupons" class="com.coupon.CouponCreation" method="insCouponSalesDetails">
+            <result type="json"></result>
+        </action>
+
+        <action name="couponSalesBillNo" class="com.coupon.CouponCreation" method="createCouponBillNo">
+            <result type="json"></result>
+        </action>
+       
+        <action name="fillCouponDetail" class="com.coupon.CouponRedemptionAction" method="redemptionImplementation">
+            <result type="json"></result>
+        </action>
+       
+        <action name="couponRedemptionAction" class="com.coupon.CouponRedemptionAction" method="siCOUPONREDEMPTIONVAILD">
+            <result type="json"></result>
+        </action>
+        
+        <!--    ADMIN PANEL START   -->
+        <action name="getEmpInfo" class="com.superadmin.CreateNewCounterUser" method="getUserInfo">
+            <result type="json"></result>
+        </action>
+        <action name="updateEmpInfo" class="com.Action.Users" method="updateUserInfo">
+            <result type="json"></result>
+        </action>
+        <action name="matDetailaction" class="com.Action.Materials" method="materialsList">
+            <result type="json"></result>
+        </action>
+        <action name="materialUploading" class="com.Action.MeterialUploading" method="Uploading"> 
+            <result  name="success">/admin_pages/admin_create_material.jsp?id=1</result>            
+        </action>
+        <action name="getMatInfo" class="com.Action.Materials" method="MaterialInfo">
+            <result type="json"></result>
+        </action>
+        <action name="updateMatInfo" class="com.Action.Materials" method="updateMaterial">
+            <result type="json"></result>
+        </action>
+        <action name="vendorDetailaction" class="com.Action.Vendors" method="vendorList">
+            <result type="json"></result>
+        </action>
+        <action name="vendorUploading" class="com.Action.VendorUploading" method="uploading_v"> 
+            <result  name="success">/admin_pages/admin_create_vendor.jsp?id=1</result>            
+        </action>
+        <action name="getVenInfo" class="com.Action.Vendors" method="vendorInfo">
+            <result type="json"></result>
+        </action>
+        <action name="updateVendorInfo" class="com.Action.Vendors" method="updateVendor">
+            <result type="json"></result>
+        </action>
+        <action name="counterDetailAction" class="com.Action.CounterUpdation" method="counterList">
+            <result type="json"></result>
+        </action>
+        <action name="branchCode" class="com.Action.CounterUpdation" method="getbranchCode">
+            <result type="json"></result>
+        </action>
+        <action name="createCounter" class="com.Action.Counter" method="createCounter">
+            <result type="json"></result>
+        </action>
+        <action name="getCountInfo" class="com.Action.Counter" method="getCounterInfo">
+            <result type="json"></result>
+        </action>
+        <action name="updateCountInfo" class="com.Action.CounterUpdation" method="updateCounterInfo">
+            <result type="json"></result>
+        </action>
+        <action name="salesIntimationReportAction" class="com.Action.SalesIntimationReport" method="getSIRTList">
+            <result type="json"></result>
+        </action>
+        <action name="createSIRAction" class="com.Action.SalesIntimationReport" method="createSIRT">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="getreportTypeAction" class="com.Action.SalesIntimationReportInfo" method="getSIRTInfo">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="updateSIRAction" class="com.Action.SalesIntimationReportInfo" method="updateSIRTInfo">
+            <result name="success" type="json"></result>
+        </action>
+        <!--  ADMIN PANEL END   -->
+        <action name="resetPwd" class="com.Action.UserLogin_Action" method="updatePwd">
+            <result type="json"></result>
+        </action>
+        
+        
+        
+        <action name="securityQuestionAction" class="com.Action.SecurityQuestionList" method="questionsList">
+            <result type="json"></result>
+        </action>
+        <action name="getQuestionAction" class="com.Action.SecurityQuestions" method="getQuestion">
+            <result type="json"></result>
+        </action>
+        <action name="updateQuestionAction" class="com.Action.SecurityQuestionList" method="updateQuestion">
+            <result type="json"></result>
+        </action>
+        <action name="createQuestionAction" class="com.Action.SecurityQuestionList" method="createQuestion">
+            <result type="json"></result>
+        </action>
+        
+        <action name="reportTypesAction" class="com.Action.ReportType" method="displayTypes">
+            <result type="json"></result>
+        </action>
+        
+        <action name="getreportType" class="com.Action.Reports" method="showType">
+            <result type="json"></result>
+        </action>
+        
+        <action name="UpdateRTypeAction" class="com.Action.Reports" method="updateType">
+            <result type="json"></result>
+        </action>
+        
+        <action name="getCancel_historyAction" class="com.Action.CancelledHistory" method="getCanceledHistoryInfo">
+            <result type="json"></result>
+        </action>
+        
+        <action name="getInfoCounterBillAction" class="com.Action.CounterBillInfo" method="getInfoCounterBill">
+            <result type="json"></result>
+        </action>
+        
+        
+        <!--  Reasons Start   -->
+        <action name="cancelReasonAction" class="com.Action.Cancelling_Reason" method="fillCancelReasonTypes">
+            <result type="json"></result>
+        </action>
+        <action name="getCancelReason" class="com.Action.Cancelling_Reason" method="fillCancelReasonTypesIDBased">
+            <result type="json"></result>
+        </action>
+        <action name="UpdateCancelReason" class="com.Action.Cancelling_Reason" method="UpdateCancelReasonTypesIDBased">
+            <result type="json"></result>
+        </action>
+        <action name="CreateCancelReason" class="com.Action.Cancelling_Reason" method="CreateCancelReasonTypesIDBased">
+            <result type="json"></result>
+        </action>
+        
+        <!--CASH TO CARD,CARD TO CASH -->
+        <action name="changeCashToCardAction" class="com.Action.CashBill.CashBillDetails" method="getCashBillInfo">
+            <result name="success" type="json"></result>
+        </action>
+        
+        <action name="updatePayTypeAction" class="com.Action.CashBill.CashBillDetails" method="updatePayType">
+            <result name="success" type="json"></result>
+        </action>
+        <!--CASH TO CARD,CARD TO CASH -->
+    </package>
+    
+    <package name="default" extends="struts-default,json-default">
+        
+        <interceptors>
+            <interceptor name="logincheck" class="com.Interceptor.LoginInterceptor"></interceptor>
+            <interceptor-stack name="loginstack">
+                <interceptor-ref name="logincheck"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+        
+        <default-interceptor-ref name="loginstack"></default-interceptor-ref>
+        <global-results>
+            <result name="r_error">/LoginFaillure.jsp</result>
+        </global-results>
+        
+    </package>
+</struts>

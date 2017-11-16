@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://khd-app-vd02.infra.karnataka.gov.in:55000/dir/wsdl?p=sa/cf1597aefd8a39cb80c3adafc9aeb683" uri="src/conf/xml-resources/web-service-references/cf1597aefd8a39cb80c3adafc9aeb683_1/wsdl/khd-app-vd02.infra.karnataka.gov.in_55000/dir/wsdl.p_sa/cf1597aefd8a39cb80c3adafc9aeb683.wsdl"/>
+    <system systemId="http://khd-app-vd02.infra.karnataka.gov.in:55000/dir/wsdl?p=sa/54e9384809fb3362aed78f1031631fa3" uri="src/conf/xml-resources/web-service-references/54e9384809fb3362aed78f1031631fa3_1/wsdl/khd-app-vd02.infra.karnataka.gov.in_55000/dir/wsdl.p_sa/54e9384809fb3362aed78f1031631fa3.wsdl"/>
+</catalog>
