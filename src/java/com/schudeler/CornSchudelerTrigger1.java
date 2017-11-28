@@ -15,7 +15,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 @DisallowConcurrentExecution
-public class CornSchudelerTrigger implements Job {
+public class CornSchudelerTrigger1 implements Job {
 
     @Override
     public void execute(JobExecutionContext jec) throws JobExecutionException {
@@ -84,7 +84,7 @@ public class CornSchudelerTrigger implements Job {
                         rs = ps.executeQuery();
 
                         while (rs.next()) {
-                            System.out.println("result==>" + rs.getString("date_time"));
+                            //System.out.println("result==>" + rs.getString("date_time"));
                             //Value for list 
                             LineItem item1 = new LineItem();
                             item1.setId(rs.getInt("item"));
@@ -124,7 +124,7 @@ public class CornSchudelerTrigger implements Job {
                             manual_bill_no = rs.getString("manual_bill_no").trim();
                             counter_name = rs.getString("counter").trim();
                             counter_type = rs.getString("counter_no_legacy").trim();
-                            System.out.println("date===>" + date_time);
+                            //System.out.println("date===>" + date_time);
                         }
                         System.out.println(counterbill_no + " counterbill_no===sNo==>" + sNo);
                         if (!counterbill_no.equals(sNo)) {
@@ -134,7 +134,7 @@ public class CornSchudelerTrigger implements Job {
                             if (xml.contains("items")) {
                                 String sql = "INSERT INTO report_summary (sales_orderno,plant,xml_document,date_time,gst_percentage,sgst_amt,cgst_amt,cashbill_amt,bill_amt,pck_charge,net_amt,txt_billAmt,paymentType,user_id,emp_name,manual_bill_no,counter_name,counter_type) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 //                                String sql = "INSERT INTO report_summary (sales_orderno,plant,xml_document,date_time,cashbill_amt,bill_amt,pck_charge,net_amt,txt_billAmt,paymentType,user_id,emp_name,manual_bill_no,counter_name,counter_type) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                                con = daoClass.Fun_DbCon();
+                                //con = daoClass.Fun_DbCon();
                                 ps = con.prepareStatement(sql);
                                 ps.setString(1, sNo);
                                 ps.setInt(2, plantId);
@@ -152,13 +152,15 @@ public class CornSchudelerTrigger implements Job {
                                 ps.setString(14, user_id);
                                 ps.setString(15, emp_name);
                                 ps.setString(16, manual_bill_no);
+                                System.out.println("COUNTER NAME : "+counter_name);
                                 ps.setString(17, counter_name);
+                                System.out.println("COUNTER TYPE : "+counter_type);
                                 ps.setString(18, counter_type);
                                 int i = ps.executeUpdate();
                                 System.out.println("inserting data to new Report table==>" + i);
                                 if (i == 1) {
                                     String update = "UPDATE `pos`.`cashbill_lineitem_master` SET `reportMoving`=? WHERE `counterbill_no`=?";
-                                    con = daoClass.Fun_DbCon();
+                                    //con = daoClass.Fun_DbCon();
                                     ps = con.prepareStatement(update);
 
                                     ps.setString(1, "1");
@@ -192,7 +194,7 @@ public class CornSchudelerTrigger implements Job {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(CornSchudelerTrigger.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CornSchudelerTrigger1.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

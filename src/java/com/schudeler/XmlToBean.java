@@ -34,7 +34,7 @@ public class XmlToBean {
             Unmarshaller unMarshaller = context.createUnmarshaller();
             items = (LineItems) unMarshaller.unmarshal(new StringReader(Xml));
         } catch (Exception e) {
-
+            System.out.println("Exception in creating XML : "+e.getMessage());
         }
         return items;
     }
