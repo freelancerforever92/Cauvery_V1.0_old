@@ -105,7 +105,9 @@ public class Fill_Purchase_Product_Action extends ActionSupport {
     public String Fun_PurchaseDetials() {
         try {
             stockCondition = Integer.parseInt(DaoClass.getStockCheckValue());
-            if (getSAPLiveStock() > 0) {
+//            System.out.println("SAP STOCK :  " + stockCondition);
+            // if (getSAPLiveStock() > 0) {
+            if (stockCondition >= 0) {
                 String getMaterialDetailsQuery = "SELECT materialTaxgroup.price,materialTaxgroup.material_desc,materialTaxgroup.craft_group,craftTaxprice.output_tax,craftTaxprice.output_gst_tax FROM pos.material_master_taxgroup materialTaxgroup INNER JOIN craft_tax_price craftTaxprice ON(materialTaxgroup.craft_group =craftTaxprice.craft_group)WHERE(materialTaxgroup.material_no = '" + Txtmaterial.trim() + "')"; // craftTaxprice.output_gst_tax - FOR GST VALUE
                 rs = cado.Fun_Resultset(getMaterialDetailsQuery);
                 while (rs.next()) {
@@ -117,10 +119,12 @@ public class Fill_Purchase_Product_Action extends ActionSupport {
                 }
                 //liveStockStaus = true;
                 liveStockStaus = 1;
-            } else if (getSAPLiveStock() == -1) {
+                //} else if (getSAPLiveStock() == -1) {
+            } else if (stockCondition == -1) {
                 //liveStockStaus = false;
                 liveStockStaus = -1;
-            } else if (getSAPLiveStock() == -2) {
+                //}else if (getSAPLiveStock() == -2) {
+            } else if (stockCondition == -2) {
                 //liveStockStaus = false;
                 liveStockStaus = -2;
             }
@@ -234,8 +238,4 @@ public class Fill_Purchase_Product_Action extends ActionSupport {
         this.materialCraftGST = materialCraftGST;
     }
 
-   
-
-    
-    
 }
