@@ -28,12 +28,12 @@ public class CornSchudelerTrigger implements Job {
         System.out.println("time" + jobName);
 
         try {
-            
+
             Connection con = null;
             PreparedStatement ps = null;
             ResultSet rs = null;
             DaoClass daoClass = new DaoClass();
-            
+
             XmlToBean td = new XmlToBean();
             ArrayList<String> salesOrderNo = new ArrayList<>();
             try {
@@ -72,18 +72,21 @@ public class CornSchudelerTrigger implements Job {
                     String counter_type = " ";
                     List<LineItem> Listitems = new ArrayList<>();
                     for (String sNo : salesOrderNo) {
-                        if(sNo.equalsIgnoreCase("20170071164") || sNo.equalsIgnoreCase("20170071192") || sNo.equalsIgnoreCase("20170044477") || sNo.equalsIgnoreCase("20170044695") || sNo.equalsIgnoreCase("20170047701") ){
+                        if (sNo.equalsIgnoreCase("20170071164") || sNo.equalsIgnoreCase("20170071192") || sNo.equalsIgnoreCase("20170044477") || sNo.equalsIgnoreCase("20170044695") || sNo.equalsIgnoreCase("20170047701")) {
                             System.out.println(" --- FOUND --- ");
                         }
                         //Query
                         String query = "SELECT item,material,materialCraftGroup,descrip,vendor,qty,price,prc_value,discount_value,discount_percentage,vat_percentage,vat_value,header.sgst_value,header.gst_percentage,header.cgst_value,calcu_value,cashbill_lineitem_master.plantId,cashbill_amt,header.date_time, bil_amt,lineitem.pck_charge,net_amt,txt_bilAmt,paymentType,emp_name,user_id,manual_bill_no,counter,counter_no_legacy FROM ((((pos.cashbill_lineitem_master cashbill_lineitem_master INNER JOIN pos.lineitem lineitem ON (lineitem.sales_orderno = cashbill_lineitem_master.counterbill_no )) INNER JOIN  pos.header header  ON (header.sales_orderno =   cashbill_lineitem_master.counterbill_no)) INNER JOIN pos.branch_counter branch_counter ON (header.counterpk = branch_counter.counter_pk)) INNER JOIN    pos.cashbill_header_master cashbill_header_master  ON (cashbill_lineitem_master.cashBill_id = cashbill_header_master.cashBill_id))INNER JOIN pos.emp_master emp_master ON (cashbill_header_master.user_id = emp_master.emp_id) WHERE (header.cancelFlag='N') and lineitem.sales_orderno=?";
+                        //System.out.println(" --- Query :  --- " + query);
                         ps = con.prepareStatement(query);
                         //Value
                         //sNo = "20170071164";
-                        ps.setString(1,sNo);
-                        rs = ps.executeQuery();
 
+                        ps.setString(1, sNo);
+                        rs = ps.executeQuery();
+                        System.out.println(" --- SALESOREDRNO  0:  --- " + sNo);
                         while (rs.next()) {
+                            System.out.println(" --- SALESOREDRNO  1:  --- " + sNo);
                             System.out.println("result==>" + rs.getString("date_time"));
                             //Value for list 
                             LineItem item1 = new LineItem();
@@ -102,9 +105,9 @@ public class CornSchudelerTrigger implements Job {
                             item1.setCalcuValu(rs.getString("calcu_value").trim());
                             Listitems.add(item1);
                             items.setItems(Listitems);
-                            System.out.println("CRAFT GROUP : "+rs.getString("materialCraftGroup").trim());
-                            if(rs.getString("materialCraftGroup").equalsIgnoreCase("P1") || rs.getString("materialCraftGroup").equalsIgnoreCase("P2") || rs.getString("materialCraftGroup").equalsIgnoreCase("P3")){
-                                System.out.println("P1 - P2 -P3 : COUNTER'S :: "+items);
+                            System.out.println("CRAFT GROUP : " + rs.getString("materialCraftGroup").trim());
+                            if (rs.getString("materialCraftGroup").equalsIgnoreCase("P1") || rs.getString("materialCraftGroup").equalsIgnoreCase("P2") || rs.getString("materialCraftGroup").equalsIgnoreCase("P3")) {
+                                System.out.println("P1 - P2 -P3 : COUNTER'S :: " + items);
                             }
 
                             //uniqe valus
@@ -134,6 +137,7 @@ public class CornSchudelerTrigger implements Job {
                             if (xml.contains("items")) {
                                 String sql = "INSERT INTO report_summary (sales_orderno,plant,xml_document,date_time,gst_percentage,sgst_amt,cgst_amt,cashbill_amt,bill_amt,pck_charge,net_amt,txt_billAmt,paymentType,user_id,emp_name,manual_bill_no,counter_name,counter_type) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 //                                String sql = "INSERT INTO report_summary (sales_orderno,plant,xml_document,date_time,cashbill_amt,bill_amt,pck_charge,net_amt,txt_billAmt,paymentType,user_id,emp_name,manual_bill_no,counter_name,counter_type) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                                System.out.println(" --- QUERRY XML --- " + sql);
                                 con = daoClass.Fun_DbCon();
                                 ps = con.prepareStatement(sql);
                                 ps.setString(1, sNo);

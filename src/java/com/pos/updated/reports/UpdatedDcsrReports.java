@@ -37,9 +37,9 @@ public class UpdatedDcsrReports extends ActionSupport {
         Float netAmount = 0f;
         Float vatAmount = 0f;
 
-        Float gstPercentageAmount = 0f;
-        Float sgstAmount = 0f;
-        Float cgstAmount = 0f;
+        Float gstPercentageAmount = 0f;     //for GST
+        Float sgstAmount = 0f;              //for GST
+        Float cgstAmount = 0f;              //for GST
 
         Float packAmount = 0f;
         Float cashBillAmount = 0f;
@@ -49,9 +49,9 @@ public class UpdatedDcsrReports extends ActionSupport {
         Float netAmountL = 0f;
         Float vatAmountL = 0f;
 
-        Float gstPercentageAmountL = 0f;
-        Float sgstAmountL = 0f;
-        Float cgstAmountL = 0f;
+        Float gstPercentageAmountL = 0f;              //for GST
+        Float sgstAmountL = 0f;              //for GST
+        Float cgstAmountL = 0f;              //for GST
 
         Float packAmountL = 0f;
         Float cashBillAmountL = 0f;
@@ -61,9 +61,9 @@ public class UpdatedDcsrReports extends ActionSupport {
         Float netAmountS = 0f;
         Float vatAmountS = 0f;
 
-        Float gstPercentageS = 0f;
-        Float sgstAmountS = 0f;
-        Float cgstAmountS = 0f;
+        Float gstPercentageS = 0f;              //for GST
+        Float sgstAmountS = 0f;              //for GST
+        Float cgstAmountS = 0f;              //for GST
 
         Float packAmountS = 0f;
         Float totalS = 0f;
@@ -74,9 +74,9 @@ public class UpdatedDcsrReports extends ActionSupport {
         Float empnetAmountS = 0f;
         Float empvatAmountS = 0f;
 
-        Float empGstPercentageS = 0f;
-        Float empSgstAmountS = 0f;
-        Float empcgstAmountS = 0f;
+        Float empGstPercentageS = 0f;              //for GST
+        Float empSgstAmountS = 0f;              //for GST
+        Float empcgstAmountS = 0f;              //for GST
 
         Float emppackAmountS = 0f;
         Float empcashBillAmountFloat = 0f;
@@ -86,9 +86,9 @@ public class UpdatedDcsrReports extends ActionSupport {
         Float netAmountGT = 0f;
         Float vatAmountGT = 0f;
 
-        Float gstAmountGT = 0f;
-        Float sgstAmountGT = 0f;
-        Float cgstAmountGT = 0f;
+        Float gstAmountGT = 0f;              //for GST
+        Float sgstAmountGT = 0f;              //for GST
+        Float cgstAmountGT = 0f;              //for GST
 
         Float packAmountGT = 0f;
         Float cashBillAmountGT = 0f;
@@ -98,9 +98,9 @@ public class UpdatedDcsrReports extends ActionSupport {
         Float empnetAmountG = 0f;
         Float empvatAmountG = 0f;
 
-        Float empGstPercentageG = 0f;
-        Float empSgstAmountG = 0f;
-        Float empCgstAmountG = 0f;
+        Float empGstPercentageG = 0f;              //for GST
+        Float empSgstAmountG = 0f;              //for GST
+        Float empCgstAmountG = 0f;              //for GST
 
         Float emppackAmountG = 0f;
         Float empcashBillAmountFloatG = 0f;
@@ -124,7 +124,7 @@ public class UpdatedDcsrReports extends ActionSupport {
             paraToDate = daoClass.Fun_Str("SELECT SQL_CACHE Date(ADDDATE('" + paraToDate.trim() + "',1))");
 
             String query = "SELECT * FROM pos.report_summary where date_time between ? and ? ";
-            System.out.println(paraPaymentType + "=-=HELLO DCSR-=>" + query);
+            //System.out.println(paraPaymentType + "=-=HELLO DCSR-=>" + query);
             if (!paraPaymentType.equalsIgnoreCase("CASH/CARD")) {
                 query = query + " and paymentType=?";
             }
@@ -192,7 +192,7 @@ public class UpdatedDcsrReports extends ActionSupport {
                 gstAmountGT = gstAmountGT + gstPercentageAmount;    // for gst
                 sgstAmountGT = sgstAmountGT + sgstAmount;           // for gst
                 cgstAmountGT = cgstAmountGT + cgstAmount;           // for gst
-                
+
                 packAmountGT = packAmountGT + packAmount;
                 cashBillAmountGT = cashBillAmountGT + Math.round(cashBillAmount);
                 if (frmYYYY <= 2017 && (frmMM <= 6 || frmMM <= 06) && frmDD <= 30) {
@@ -482,16 +482,16 @@ public class UpdatedDcsrReports extends ActionSupport {
             CashLineItemDCSR cSRGT = new CashLineItemDCSR();
             cSRGT.setDcsrDate("Grand- Total");
             cSRGT.setGrossAmountFloat(grossAmountGT);
-           
+
             cSRGT.setDiscAmountFloat(discAmountGT);
             cSRGT.setNetAmountFloat(netAmountGT);
             cSRGT.setVatAmountFloat(vatAmountGT);
 
             cSRGT.setGstPercentage(gstAmountGT);     //for GST
             cSRGT.setSgstAmountFloat(sgstAmountGT);  //for GST
-            
+
             cSRGT.setCgstAmountFloat(cgstAmountGT);  //for GST
-            
+
             cSRGT.setPackAmountFloat(packAmountGT);
             cSRGT.setCashBillAmountFloat(Math.round(cashBillAmountGT));
             cSRGT.setCashBillAmountWROFloat(cashBillAmountWROFGT);

@@ -1071,20 +1071,25 @@ function refreshRowQty(rowIndexthis, rowIndexValue) {
     }
     var updatingRowQty = parseFloat($("#txtQuantity" + rowIndexValue).val().trim());
     var avaiableVendorQty = parseFloat($("#txtVendorStock" + rowIndexValue).val().trim());
-    if (avaiableVendorQty !== 0 && sapStockCondition === 1) {//INTERNET IS THERE,STOCK VALIDATION IS "ON".
-        if (updatingRowQty <= avaiableVendorQty) {
+    var thisTender = $("#thisIsTender").val();
+    if (thisTender !== 'tender') {
+        if (avaiableVendorQty !== 0 && sapStockCondition === 1) {//INTERNET IS THERE,STOCK VALIDATION IS "ON".
+            if (updatingRowQty <= avaiableVendorQty) {
+                reset_Quantity(rowIndexthis, rowIndexValue);
+                document.getElementById('txtQuantity' + rowIndexValue).style.borderColor = "";
+            } else if (updatingRowQty > avaiableVendorQty) {
+                alert("Oops !!!,Entered quantity is greater than avaiable quantity..,");
+                $("#txtQuantity" + rowIndexValue).select();
+                document.getElementById('txtQuantity' + rowIndexValue).style.borderColor = "red";
+            }
+        } else if (avaiableVendorQty !== 0 && sapStockCondition === 0) {//STOCK VALIDATION IS "ON",BUT INTERNET IS NOT THERE.
             reset_Quantity(rowIndexthis, rowIndexValue);
-            document.getElementById('txtQuantity' + rowIndexValue).style.borderColor = "";
-        } else if (updatingRowQty > avaiableVendorQty) {
-            alert("Oops !!!,Entered quantity is greater than avaiable quantity..,");
-            $("#txtQuantity" + rowIndexValue).select();
-            document.getElementById('txtQuantity' + rowIndexValue).style.borderColor = "red";
+        } else if (avaiableVendorQty === 0 && sapStockCondition === 0) {
+            reset_Quantity(rowIndexthis, rowIndexValue);
+        } else if (avaiableVendorQty === 0 && sapStockCondition === 1) {
+            reset_Quantity(rowIndexthis, rowIndexValue);
         }
-    } else if (avaiableVendorQty !== 0 && sapStockCondition === 0) {//STOCK VALIDATION IS "ON",BUT INTERNET IS NOT THERE.
-        reset_Quantity(rowIndexthis, rowIndexValue);
-    } else if (avaiableVendorQty === 0 && sapStockCondition === 0) {
-        reset_Quantity(rowIndexthis, rowIndexValue);
-    } else if (avaiableVendorQty === 0 && sapStockCondition === 1) {
+    } else {
         reset_Quantity(rowIndexthis, rowIndexValue);
     }
 }
@@ -1244,7 +1249,7 @@ function reset_Quantity(rcv_indxthis, rcv_indxValue)
                 } else {
                     /*IMPLEMENTED BY PRANESH 21.04.15*/
                     //GrandBillAmt = Math.round($("#txtValue" + rcv_indxValue).val()).toFixed(2);  // FOR GST
-                    GrandBillAmt = $("#txtValue" + rcv_indxValue).val().toFixed(2);
+                    GrandBillAmt = $("#txtValue" + rcv_indxValue).val();
                 }
             }
 
@@ -1446,13 +1451,13 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                                 //varValu = Math.round(totValueWithDiscount * $("#txtVat" + i).val() / 100);
 
                                 /* START,CODE FOR APPLYING GST   */
-                                    if (GSTOfCraft === "0.00") {
-                                        varValu = (totValueWithDiscount * $("#txtVat" + i).val() / 100);
-                                        totValueWithVat = (totValueWithDiscount + varValu);
-                                    } else if (GSTOfCraft > 0) {
-                                        totValueWithVat = totValueWithDiscount;
-                                        varValu = gstCalculation(totValueWithDiscount, GSTOfCraft);  // FOR GST
-                                    }
+                                if (GSTOfCraft === "0.00") {
+                                    varValu = (totValueWithDiscount * $("#txtVat" + i).val() / 100);
+                                    totValueWithVat = (totValueWithDiscount + varValu);
+                                } else if (GSTOfCraft > 0) {
+                                    totValueWithVat = totValueWithDiscount;
+                                    varValu = gstCalculation(totValueWithDiscount, GSTOfCraft);  // FOR GST
+                                }
                                 /* END ,CODE FOR APPLYING GST   */
 
                                 $("#txtVatValue" + i).val("");
@@ -1460,7 +1465,7 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                                 $("#txtVatValue" + i).val(varValu);
 
                                 //totValueWithVat = Math.round(totValueWithDiscount + varValu);
-                               
+
                                 $("#txtValue" + i).val("");
                                 $("#txtValue" + i).val(totValueWithVat.toFixed(2));
                             } else if (totQuantity > avaiableVendorStock) {
@@ -1485,13 +1490,13 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                             //varValu = Math.round(totValueWithDiscount * $("#txtVat" + i).val() / 100);
 
                             /* START,CODE FOR APPLYING GST   */
-                                if (GSTOfCraft === "0.00") {
-                                    varValu = (totValueWithDiscount * $("#txtVat" + i).val() / 100);
-                                    totValueWithVat = (totValueWithDiscount + varValu);
-                                } else if (GSTOfCraft > 0) {
-                                    totValueWithVat = totValueWithDiscount;
-                                    varValu = gstCalculation(totValueWithDiscount, GSTOfCraft);  // FOR GST
-                                }
+                            if (GSTOfCraft === "0.00") {
+                                varValu = (totValueWithDiscount * $("#txtVat" + i).val() / 100);
+                                totValueWithVat = (totValueWithDiscount + varValu);
+                            } else if (GSTOfCraft > 0) {
+                                totValueWithVat = totValueWithDiscount;
+                                varValu = gstCalculation(totValueWithDiscount, GSTOfCraft);  // FOR GST
+                            }
                             /* END ,CODE FOR APPLYING GST   */
 
                             $("#txtVatValue" + i).val("");
@@ -1499,7 +1504,7 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                             $("#txtVatValue" + i).val(varValu);
 
                             //totValueWithVat = Math.round(totValueWithDiscount + varValu);
-                            
+
                             $("#txtValue" + i).val("");
                             $("#txtValue" + i).val(totValueWithVat.toFixed(2));
                         } else if (avaiableVendorStock === 0 && sapStockCondition === 0) {
@@ -1520,13 +1525,13 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                             //varValu = Math.round(totValueWithDiscount * $("#txtVat" + i).val() / 100);
 
                             /* START,CODE FOR APPLYING GST   */
-                                if (GSTOfCraft === "0.00") {
-                                    varValu = (totValueWithDiscount * $("#txtVat" + i).val() / 100);
-                                    totValueWithVat = (totValueWithDiscount + varValu);
-                                } else if (GSTOfCraft > 0) {
-                                    totValueWithVat = totValueWithDiscount;
-                                    varValu = gstCalculation(totValueWithDiscount, GSTOfCraft);  // FOR GST
-                                }
+                            if (GSTOfCraft === "0.00") {
+                                varValu = (totValueWithDiscount * $("#txtVat" + i).val() / 100);
+                                totValueWithVat = (totValueWithDiscount + varValu);
+                            } else if (GSTOfCraft > 0) {
+                                totValueWithVat = totValueWithDiscount;
+                                varValu = gstCalculation(totValueWithDiscount, GSTOfCraft);  // FOR GST
+                            }
                             /* END ,CODE FOR APPLYING GST   */
 
                             $("#txtVatValue" + i).val("");
@@ -1555,13 +1560,13 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                             //varValu = Math.round(totValueWithDiscount * $("#txtVat" + i).val() / 100);
 
                             /* START,CODE FOR APPLYING GST   */
-                                if (GSTOfCraft === "0.00") {
-                                    varValu = (totValueWithDiscount * $("#txtVat" + i).val() / 100);
-                                    totValueWithVat = (totValueWithDiscount + varValu);
-                                } else if (GSTOfCraft > 0) {
-                                    totValueWithVat = totValueWithDiscount;
-                                    varValu = gstCalculation(totValueWithDiscount, GSTOfCraft);  // FOR GST
-                                }
+                            if (GSTOfCraft === "0.00") {
+                                varValu = (totValueWithDiscount * $("#txtVat" + i).val() / 100);
+                                totValueWithVat = (totValueWithDiscount + varValu);
+                            } else if (GSTOfCraft > 0) {
+                                totValueWithVat = totValueWithDiscount;
+                                varValu = gstCalculation(totValueWithDiscount, GSTOfCraft);  // FOR GST
+                            }
                             /* END ,CODE FOR APPLYING GST   */
 
                             $("#txtVatValue" + i).val("");
@@ -1594,13 +1599,13 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                             //varValu = Math.round(newPriceValu * $("#txtVat" + i).val() / 100);
 
                             /* START,CODE FOR APPLYING GST   */
-                                if (GSTOfCraft === "0.00") {
-                                    varValu = (newPriceValu * $("#txtVat" + i).val() / 100);
-                                    totValueWithVat = (parseFloat(newPriceValu) + parseFloat(varValu));
-                                } else if (GSTOfCraft > 0) {
-                                    totValueWithVat = newPriceValu;
-                                    varValu = gstCalculation(newPriceValu, GSTOfCraft);  // FOR GST
-                                }
+                            if (GSTOfCraft === "0.00") {
+                                varValu = (newPriceValu * $("#txtVat" + i).val() / 100);
+                                totValueWithVat = (parseFloat(newPriceValu) + parseFloat(varValu));
+                            } else if (GSTOfCraft > 0) {
+                                totValueWithVat = newPriceValu;
+                                varValu = gstCalculation(newPriceValu, GSTOfCraft);  // FOR GST
+                            }
                             /* END ,CODE FOR APPLYING GST   */
 
                             $("#txtVatValue" + i).val("");
@@ -1608,7 +1613,7 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                             $("#txtVatValue" + i).val(varValu);
 
                             //totValueWithVat = Math.round(parseFloat(newPriceValu) + parseFloat(varValu));
-                            
+
                             $("#txtValue" + i).val("");
                             $("#txtValue" + i).val(totValueWithVat.toFixed(2));
                             document.getElementById('txtQuantity' + i).style.borderColor = "";
@@ -1629,13 +1634,13 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                         //varValu = Math.round(newPriceValu * $("#txtVat" + i).val() / 100);
 
                         /* START,CODE FOR APPLYING GST   */
-                            if (GSTOfCraft === "0.00") {
-                                varValu = (newPriceValu * $("#txtVat" + i).val() / 100);
-                                totValueWithVat = (parseFloat(newPriceValu) + parseFloat(varValu));
-                            } else if (GSTOfCraft > 0) {
-                                totValueWithVat = newPriceValu;
-                                varValu = gstCalculation(newPriceValu, GSTOfCraft);  // FOR GST
-                            }
+                        if (GSTOfCraft === "0.00") {
+                            varValu = (newPriceValu * $("#txtVat" + i).val() / 100);
+                            totValueWithVat = (parseFloat(newPriceValu) + parseFloat(varValu));
+                        } else if (GSTOfCraft > 0) {
+                            totValueWithVat = newPriceValu;
+                            varValu = gstCalculation(newPriceValu, GSTOfCraft);  // FOR GST
+                        }
                         /* END ,CODE FOR APPLYING GST   */
 
                         $("#txtVatValue" + i).val("");
@@ -1643,7 +1648,7 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                         $("#txtVatValue" + i).val(varValu);
 
                         //totValueWithVat = Math.round(parseFloat(newPriceValu) + parseFloat(varValu));
-                        
+
                         $("#txtValue" + i).val("");
                         $("#txtValue" + i).val(totValueWithVat.toFixed(2));
                     } else if (presentVendorStock === 0 && sapStockCondition === 0) {
@@ -1657,17 +1662,17 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                         newPriceValu = (parseFloat($("#txtQuantity" + i).val()) * parseFloat($("#txtRate" + i).val()));
 
                         //varValu = Math.round(newPriceValu * $("#txtVat" + i).val() / 100);
-                        
+
                         /* START,CODE FOR APPLYING GST   */
-                            if (GSTOfCraft === "0.00") {
-                                varValu = (newPriceValu * $("#txtVat" + i).val() / 100);
-                                totValueWithVat = (parseFloat(newPriceValu) + parseFloat(varValu));
-                            } else if (GSTOfCraft > 0) {
-                                totValueWithVat = newPriceValu;
-                                varValu = gstCalculation(newPriceValu, GSTOfCraft);  // FOR GST
-                            }
+                        if (GSTOfCraft === "0.00") {
+                            varValu = (newPriceValu * $("#txtVat" + i).val() / 100);
+                            totValueWithVat = (parseFloat(newPriceValu) + parseFloat(varValu));
+                        } else if (GSTOfCraft > 0) {
+                            totValueWithVat = newPriceValu;
+                            varValu = gstCalculation(newPriceValu, GSTOfCraft);  // FOR GST
+                        }
                         /* END ,CODE FOR APPLYING GST   */
-                        
+
                         $("#txtVatValue" + i).val("");
                         //$("#txtVatValue" + i).val(rcv_Valu);
                         $("#txtVatValue" + i).val(varValu);
@@ -1690,13 +1695,13 @@ function insertRow(rcv_Mtrl, rcv_Desc, rcv_Quantity, rcv_Rate, rcv_Valu, rcv_Vat
                         //varValu = Math.round(newPriceValu * $("#txtVat" + i).val() / 100);
 
                         /* START,CODE FOR APPLYING GST   */
-                            if (GSTOfCraft === "0.00") {
-                                varValu = (newPriceValu * $("#txtVat" + i).val() / 100);
-                                totValueWithVat = (parseFloat(newPriceValu) + parseFloat(varValu));
-                            } else if (GSTOfCraft > 0) {
-                                totValueWithVat = newPriceValu;
-                                varValu = gstCalculation(newPriceValu, GSTOfCraft);  // FOR GST
-                            }
+                        if (GSTOfCraft === "0.00") {
+                            varValu = (newPriceValu * $("#txtVat" + i).val() / 100);
+                            totValueWithVat = (parseFloat(newPriceValu) + parseFloat(varValu));
+                        } else if (GSTOfCraft > 0) {
+                            totValueWithVat = newPriceValu;
+                            varValu = gstCalculation(newPriceValu, GSTOfCraft);  // FOR GST
+                        }
                         /* END ,CODE FOR APPLYING GST   */
 
                         $("#txtVatValue" + i).val("");

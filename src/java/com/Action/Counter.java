@@ -27,15 +27,15 @@ public class Counter extends ActionSupport {
         count = daoClass.Fun_Int(nameQry);
         String legacyQry = "select count(*) from pos.branch_counter where counter_no_legacy='" + counterLegacyNo.trim() + "'";
         legacyCount = daoClass.Fun_Int(legacyQry);
-        String countIdQry = "select count(*) from pos.branch_counter where counter_no='" + counterId.trim() + "'";
-        checkCountId = daoClass.Fun_Int(countIdQry);
+//        String countIdQry = "select count(*) from pos.branch_counter where counter_no='" + counterId.trim() + "'";
+//        checkCountId = daoClass.Fun_Int(countIdQry);
 
         if (count <= 0) {
             if (legacyCount <= 0) {
-                if (checkCountId <= 0) {
+//                if (checkCountId <= 0) {
                     String qry = "INSERT INTO `pos`.`branch_counter` (`counter`, `counter_no`, `counter_no_legacy`, `login_userid`, `branch_code`, `counter_status`,`createdDateTime`,`lastUpdatedDateTime`)  VALUES ('" + counterName + "', '" + counterId.trim() + "', '" + counterLegacyNo + "', '', '" + branchCode + "','0',now(),'0001-01-01 01:01:01')";
                     isCounterCreated = daoClass.Fun_Updat(qry);
-                }
+//                }
             }
         }
         return SUCCESS;

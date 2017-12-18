@@ -99,6 +99,7 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
                                 String getCounterNoQuery = "select counter_pk from branch_counter where counter='" + selectedCounterText.trim() + "'";
                                 //String getLoginCraftGroup = "SELECT ccounter.craft_group FROM pos.branch_counter bcounter INNER JOIN pos.craft_counter_list ccounter ON(bcounter.counter_no = ccounter.storage_location)where bcounter.counter='" + selectedCounterText.trim() + "'";
                                 String getLoginStorageLocation = "select counter_no from pos.branch_counter where counter='" + selectedCounterText.trim() + "'";
+                                System.out.println("STORAGE LOC : " + getLoginStorageLocation);
                                 session.put("Login_pk", logpk);
                                 session.put("activeUserName", txtUname.trim());
                                 session.put("Login_name", loguname);
@@ -114,12 +115,16 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
                                 //System.out.println("counterStatusLockQuery  :   " + counterStatusLockQuery);
                                 cado.Fun_Updat(counterStatusLockQuery);//LOCKING THE PARTICULAR COUNTER FOR LOGIN USER-WITH USERID.
                                 //ActionContext.getContext().getSession().put(txtUname, txtUname.trim());
+                                System.out.println("LOGIN USER Counter Type : " + logusrtype);
                                 switch (logusrtype) {
                                     case "salesCounter":
                                         Return_userType = "salesCounterUser";
                                         break;
                                     case "cashCounter":
                                         Return_userType = "cashCounterUser";
+                                        break;
+                                    case "tenderCounter":
+                                        Return_userType = "tenderCounter";
                                         break;
                                     case "all":
                                         Return_userType = "genericCounter";
@@ -160,6 +165,7 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
     public String applyChangedCounterType() {
         try {
             String getGenericStorageLocation = "select counter_no from pos.branch_counter where counter='" + changedCounterType.trim() + "'";
+            System.out.println("->: 0 - : "+getGenericStorageLocation);
             session.put("loginStorageLocation", cado.Fun_Str(getGenericStorageLocation));
 
             String getGenericCounterNoQuery = "select counter_pk from branch_counter where counter='" + changedCounterType.trim() + "'";
