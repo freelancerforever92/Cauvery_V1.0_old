@@ -16,11 +16,11 @@
     <welcome-file-list>
         <welcome-file>index-login.jsp</welcome-file>
     </welcome-file-list>
-    <servlet>
+<!--    <servlet>
         <servlet-name>CornSchudelerJob</servlet-name>
         <servlet-class>com.schudeler.CornSchudelerJob</servlet-class>
         <load-on-startup>1</load-on-startup>
-    </servlet>
+    </servlet>-->
    
     <resource-ref>
         <res-ref-name>abc</res-ref-name>
