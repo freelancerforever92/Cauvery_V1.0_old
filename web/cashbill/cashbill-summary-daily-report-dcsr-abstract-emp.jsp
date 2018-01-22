@@ -50,7 +50,7 @@
         String toDate = request.getParameter("cbToDate").trim();
         String[] SplitToDate = toDate.split("-");
         String fromDate = request.getParameter("cbFromDate").trim();
-       // String vendorIds = request.getParameter("vendorIds").trim();
+        // String vendorIds = request.getParameter("vendorIds").trim();
         //String vendortype = request.getParameter("vendorType").trim();
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -72,7 +72,7 @@
             if (!((toDate.equals("")) || (toDate.equalsIgnoreCase(null)))) {
                 if (!((paymentType.equals("")) || (paymentType.equalsIgnoreCase(null)))) {
                     if (!((sessionId.equals("")) || (sessionId.equalsIgnoreCase(null)))) {
-                       // request.setAttribute("header", DcsrEmpWise.displayCashDailySummaryAbstractEmployeeReportDCSRAE(fromDate, toDate, paymentType, sessionId, vendorIds, vendortype));
+                        // request.setAttribute("header", DcsrEmpWise.displayCashDailySummaryAbstractEmployeeReportDCSRAE(fromDate, toDate, paymentType, sessionId, vendorIds, vendortype));
                         request.setAttribute("header", UpdatedDcsrEmpWise.updatedDcsrEmpWiseNewReport(fromDate, toDate, paymentType, sessionId));
                     }
                 }
@@ -81,7 +81,7 @@
         int dcsrEMPAbsSNo = 1;
     %>
     <body>
-        
+
         <div class="clearfix UCRBport">
             <input type="button" id="dcsraeBck" name="dcsraeBck" class="btn btn-danger" value="Back" style="margin-bottom: 5px;" onclick="load_CashBillSalesForm();"/>
             <div id="shwDCSARE" style="overflow: scroll;">
@@ -96,7 +96,7 @@
                     <display:setProperty name="export.csv.filename" value="DCSR-Employeewise-Abstract-${param.reportPaymentType}-${saveFileName}.csv"/>
                     <display:caption media="html">CAUVERY<br>Karnataka State Arts & Crafts Emporium,No 49,MG Road,Bengaluru <br> DCSR Abstract Employee Wise FROM <b> <%=dcsrReportAbsEmpFromDate%> to <%=dcsrReportAbsEmpToDate%></b> <br> Pay-Type :<b> ${param.reportPaymentType} </b> Generated Date  :<b> <c:out value="${TDate}"  /></b> </display:caption>
                     <display:caption media="excel pdf rtf">CAUVERY                                                                                                                              Karnataka State Arts & Crafts Emporium, No 49,MG Road,Bengaluru                                   DCSR Abstract Employee Wise FROM  <%=dcsrReportAbsEmpFromDate%> to <%=dcsrReportAbsEmpToDate%>                                                    Pay-Type  : ${param.reportPaymentType}  Generated Date  : <c:out value="${TDate}"  /> </display:caption>
-                     <c:if test="${head.empName !='Sub-total' }">
+                    <c:if test="${head.empName !='Sub-total' }">
                         <c:if test="${head.empName !='Grand-Total' }">
                             <display:column value="<%=dcsrEMPAbsSNo++%>" title="S.No" />    
                         </c:if>
@@ -106,7 +106,17 @@
                     <display:column property="grossAmountFloat" title="Gross Amt"  format="{0,number,0.00} "  total="true"/>
                     <display:column property="discAmountFloat" title="Dis Amt"  format="{0,number,0.00} "  total="true"/>
                     <display:column property="netAmountFloat" title="Net Amt"  format="{0,number,0.00} "  total="true"/>
-                    <display:column property="vatAmountFloat" title="VAT Amt"  format="{0,number,0.00} "  total="true"/>
+                    <c:choose>
+                        <c:when test="${head.fromDD le 30 && head.fromYY le 2017 &&( head.fromMM le 6 || head.fromMM le 06 )}">
+                            <display:column property="vatAmountFloat" title="VAT Amt"  format="{0,number,0.00} "  total="true"/>
+                        </c:when>
+                        <c:otherwise>
+                            <display:column property="sgstAmountFloat" title="SGST Amt"  format="{0,number,0.00} "  />
+                            <display:column property="cgstAmountFloat" title="CGST Amt"  format="{0,number,0.00} "  />
+                        </c:otherwise>
+                    </c:choose>
+                    
+
                     <display:column property="packAmountFloat" title="Pkg Amt"  format="{0,number,0.00} "  total="true"/>
                     <display:column property="cashBillAmountFloat" title="Total Amt"  format="{0,number,0.00} "  total="true"/>
                     <display:footer media="html">

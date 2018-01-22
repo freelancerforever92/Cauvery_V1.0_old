@@ -33,6 +33,11 @@ public class UpdatedDcsrEmpWise extends ActionSupport {
         Float discAmount = 0f;
         Float netAmount = 0f;
         Float vatAmount = 0f;
+
+        Float gstPercentage = 0f;
+        Float sgstAmount = 0f;
+        Float cgstAmount = 0f;
+
         Float packAmount = 0f;
         Float cashBillAmount = 0f;
 
@@ -40,6 +45,11 @@ public class UpdatedDcsrEmpWise extends ActionSupport {
         Float discAmountT = 0f;
         Float netAmountT = 0f;
         Float vatAmountT = 0f;
+
+        Float gstPercentageT = 0f;
+        Float sgstAmountT = 0f;
+        Float cgstAmountT = 0f;
+
         Float packAmountT = 0f;
         Float cashBillAmountT = 0f;
 
@@ -47,13 +57,23 @@ public class UpdatedDcsrEmpWise extends ActionSupport {
         Float discAmountGT = 0f;
         Float netAmountGT = 0f;
         Float vatAmountGT = 0f;
+
+        Float gstPercentageGT = 0f;
+        Float sgstAmountGT = 0f;
+        Float cgstAmountGT = 0f;
+
         Float packAmountGT = 0f;
         Float cashBillAmountGT = 0f;
-        
+
         Float grossAmountTS = 0f;
         Float discAmountTS = 0f;
         Float netAmountTS = 0f;
         Float vatAmountTS = 0f;
+
+        Float gstPercentageTS = 0f;
+        Float sgstAmountTS = 0f;
+        Float cgstAmountTS = 0f;
+
         Float packAmountTS = 0f;
         Float cashBillAmountTS = 0f;
         try {
@@ -62,8 +82,6 @@ public class UpdatedDcsrEmpWise extends ActionSupport {
             String CDate = paraToDate;
            // paraToDate = daoClass.Fun_Str("SELECT Date(ADDDATE('" + paraToDate.trim() + "',1))");
 
-            
-            
             //only fir testing
             String query = "SELECT distinct user_id from pos.report_summary where date_time between ? and ?";
             if (!paraPaymentType.equalsIgnoreCase("CASH/CARD")) {
@@ -82,11 +100,16 @@ public class UpdatedDcsrEmpWise extends ActionSupport {
             while (rs.next()) {
                 user_id.add(rs.getString("user_id"));
             }
+
+            String sptdFromDate[] = paraFromDate.split("-");
+            int frmDD = Integer.parseInt(sptdFromDate[2]);
+            int frmMM = Integer.parseInt(sptdFromDate[1]);
+            int frmYYYY = Integer.parseInt(sptdFromDate[0]);
+            
             String[] SplitFromDate = paraFromDate.split("-");
             String[] SplitToDate = paraToDate.split("-");
 //            if(Integer.parseInt((SplitToDate[1])) > Integer.parseInt(SplitFromDate[1])){
 //                SplitToDate[2]=CDate.split("-")[2];
-//                        
 //            }
             String emp_name = "";
             String emp_name_s = "Empty";
@@ -128,11 +151,26 @@ public class UpdatedDcsrEmpWise extends ActionSupport {
                         emp_name = rs.getString("emp_name");
                         netAmount = grossAmount - discAmount;
                         packAmount = rs.getFloat("pck_charge");
-                        cashBillAmount = netAmount + packAmount + vatAmount;
+                        if (frmYYYY <= 2017 && (frmMM <= 6 || frmMM <= 06) && frmDD <= 30) {
+                            //for vat
+                            cashBillAmount = netAmount + packAmount + vatAmount;
+                        } else {
+                            //for gst
+                            vatAmount = 0f;
+                            gstPercentage = gstPercentage + rs.getFloat("gst_percentage");
+                            sgstAmount = sgstAmount + rs.getFloat("sgst_amt");
+                            cgstAmount = cgstAmount + rs.getFloat("cgst_amt");
+                            cashBillAmount = netAmount + packAmount + sgstAmount + cgstAmount;
+                        }
                         grossAmountT = grossAmountT + grossAmount;
                         discAmountT = discAmountT + discAmount;
                         netAmountT = netAmountT + netAmount;
                         vatAmountT = vatAmountT + vatAmount;
+
+                        gstPercentageT = gstPercentageT + gstPercentage;
+                        sgstAmountT = sgstAmountT + sgstAmount;
+                        cgstAmountT = cgstAmountT + cgstAmount;
+
                         packAmountT = packAmountT + packAmount;
                         cashBillAmountT = cashBillAmountT + Math.round(cashBillAmount);
 
@@ -141,6 +179,11 @@ public class UpdatedDcsrEmpWise extends ActionSupport {
                         discAmountGT = discAmountGT + discAmount;
                         netAmountGT = netAmountGT + netAmount;
                         vatAmountGT = vatAmountGT + vatAmount;
+
+                        gstPercentageGT = gstPercentageGT + gstPercentage;
+                        sgstAmountGT = sgstAmountGT + sgstAmount;
+                        cgstAmountGT = cgstAmountGT + cgstAmount;
+
                         packAmountGT = packAmountGT + packAmount;
                         cashBillAmountGT = cashBillAmountGT + cashBillAmount;
 
@@ -148,6 +191,11 @@ public class UpdatedDcsrEmpWise extends ActionSupport {
                         discAmount = 0f;
                         netAmount = 0f;
                         vatAmount = 0f;
+
+                        gstPercentage = 0f;
+                        sgstAmount = 0f;
+                        cgstAmount = 0f;
+
                         packAmount = 0f;
                         cashBillAmount = 0f;
                     }
@@ -159,27 +207,47 @@ public class UpdatedDcsrEmpWise extends ActionSupport {
                         cSRG.setDiscAmountFloat(discAmountT);
                         cSRG.setNetAmountFloat(netAmountT);
                         cSRG.setVatAmountFloat(vatAmountT);
+
+                        cSRG.setGstPercentage(gstPercentageT);
+                        cSRG.setSgstAmountFloat(sgstAmountT);
+                        cSRG.setCgstAmountFloat(cgstAmountT);
+
                         cSRG.setPackAmountFloat(packAmountT);
                         cSRG.setCashBillAmountFloat(Math.round(cashBillAmountT));
+
+                        cSRG.setFromDD(frmDD);
+                        cSRG.setFromMM(frmMM);
+                        cSRG.setFromYY(frmYYYY);
+
                         summaryViewLinesDCSR.add(cSRG);
                         //Sub Total
-                          grossAmountTS=grossAmountTS+grossAmountT;
-                          discAmountTS=discAmountTS+discAmountT;
-                          netAmountTS=netAmountTS+netAmountT;
-                          vatAmountTS=vatAmountTS+vatAmountT;
-                          packAmountTS=packAmountTS+packAmountT;
-                          cashBillAmountTS=cashBillAmountTS+cashBillAmountT;
+                        grossAmountTS = grossAmountTS + grossAmountT;
+                        discAmountTS = discAmountTS + discAmountT;
+                        netAmountTS = netAmountTS + netAmountT;
+                        vatAmountTS = vatAmountTS + vatAmountT;
+
+                        gstPercentageTS = gstPercentageTS + gstPercentageT;
+                        sgstAmountTS = sgstAmountTS + sgstAmountT;
+                        cgstAmountTS = cgstAmountTS + cgstAmountT;
+
+                        packAmountTS = packAmountTS + packAmountT;
+                        cashBillAmountTS = cashBillAmountTS + cashBillAmountT;
                         grossAmountT = 0f;
                         discAmountT = 0f;
                         netAmountT = 0f;
                         vatAmountT = 0f;
+
+                        gstPercentageT = 0f;
+                        sgstAmountT = 0f;
+                        cgstAmountT = 0f;
+
                         packAmountT = 0f;
                         cashBillAmountT = 0f;
                     }
                 }
-                
-                if(!emp_name.equals("Empty")){
-                             if(!emp_name.equals(emp_name_s)){
+
+                if (!emp_name.equals("Empty")) {
+                    if (!emp_name.equals(emp_name_s)) {
                         CashLineItemDCSR cSRGs = new CashLineItemDCSR();
                         cSRGs.setDcsrDate("");
                         cSRGs.setEmpName("Sub-total");
@@ -187,19 +255,29 @@ public class UpdatedDcsrEmpWise extends ActionSupport {
                         cSRGs.setDiscAmountFloat(discAmountTS);
                         cSRGs.setNetAmountFloat(netAmountTS);
                         cSRGs.setVatAmountFloat(vatAmountTS);
+
+                        cSRGs.setGstPercentage(gstPercentageTS);
+                        cSRGs.setSgstAmountFloat(sgstAmountTS);
+                        cSRGs.setCgstAmountFloat(cgstAmountTS);
+
                         cSRGs.setPackAmountFloat(packAmountTS);
                         cSRGs.setCashBillAmountFloat(Math.round(cashBillAmountTS));
                         summaryViewLinesDCSR.add(cSRGs);
-                        grossAmountTS=0.0f;
-                        discAmountTS =0.0f;
-                        netAmountTS =0.0f;
-                        vatAmountTS =0.0f;
-                        packAmountTS =0.0f;
-                        cashBillAmountTS =0.0f;
-                             }
+                        grossAmountTS = 0.0f;
+                        discAmountTS = 0.0f;
+                        netAmountTS = 0.0f;
+                        vatAmountTS = 0.0f;
 
-            }
-                  emp_name_s=emp_name;
+                        gstPercentageTS = 0.0f;
+                        sgstAmountTS = 0.0f;
+                        cgstAmountTS = 0.0f;
+
+                        packAmountTS = 0.0f;
+                        cashBillAmountTS = 0.0f;
+                    }
+
+                }
+                emp_name_s = emp_name;
             }
             CashLineItemDCSR cSRG = new CashLineItemDCSR();
             cSRG.setDcsrDate(" ");
@@ -208,6 +286,11 @@ public class UpdatedDcsrEmpWise extends ActionSupport {
             cSRG.setDiscAmountFloat(discAmountGT);
             cSRG.setNetAmountFloat(netAmountGT);
             cSRG.setVatAmountFloat(vatAmountGT);
+
+            cSRG.setGstPercentage(gstPercentageGT);
+            cSRG.setSgstAmountFloat(sgstAmountGT);
+            cSRG.setCgstAmountFloat(cgstAmountGT);
+
             cSRG.setPackAmountFloat(packAmountGT);
             cSRG.setCashBillAmountFloat(Math.round(cashBillAmountGT));
             summaryViewLinesDCSR.add(cSRG);

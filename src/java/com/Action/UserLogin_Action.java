@@ -99,7 +99,7 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
                                 String getCounterNoQuery = "select counter_pk from branch_counter where counter='" + selectedCounterText.trim() + "'";
                                 //String getLoginCraftGroup = "SELECT ccounter.craft_group FROM pos.branch_counter bcounter INNER JOIN pos.craft_counter_list ccounter ON(bcounter.counter_no = ccounter.storage_location)where bcounter.counter='" + selectedCounterText.trim() + "'";
                                 String getLoginStorageLocation = "select counter_no from pos.branch_counter where counter='" + selectedCounterText.trim() + "'";
-                                System.out.println("STORAGE LOC : " + getLoginStorageLocation);
+                                //System.out.println("STORAGE LOC : " + getLoginStorageLocation);
                                 session.put("Login_pk", logpk);
                                 session.put("activeUserName", txtUname.trim());
                                 session.put("Login_name", loguname);
@@ -112,10 +112,10 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
                                 session.put("loginStorageLocation", cado.Fun_Str(getLoginStorageLocation));
 
                                 String counterStatusLockQuery = "update branch_counter set counter_status='1',login_userid='" + loguserId + "' where counter='" + selectedCounterText.trim() + "'";
-                                //System.out.println("counterStatusLockQuery  :   " + counterStatusLockQuery);
+                                ////System.out.println("counterStatusLockQuery  :   " + counterStatusLockQuery);
                                 cado.Fun_Updat(counterStatusLockQuery);//LOCKING THE PARTICULAR COUNTER FOR LOGIN USER-WITH USERID.
                                 //ActionContext.getContext().getSession().put(txtUname, txtUname.trim());
-                                System.out.println("LOGIN USER Counter Type : " + logusrtype);
+                                //System.out.println("LOGIN USER Counter Type : " + logusrtype);
                                 switch (logusrtype) {
                                     case "salesCounter":
                                         Return_userType = "salesCounterUser";
@@ -139,7 +139,7 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
                                     String onlineUsers = "insert into onlineusers(userName)values('" + txtUname.trim() + "')";
                                     cado.Fun_Updat(onlineUsers);
                                 }
-                                //System.out.println("Online User Querry :  " + onlineUsers);
+                                ////System.out.println("Online User Querry :  " + onlineUsers);
                             } else if (isUserStatusVaild <= 0) {
                                 Return_userType = "Invaiduser";
                             }
@@ -154,7 +154,7 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
             }
         } catch (SQLException ex) {
 //            log.info(ex.getMessage());
-            //System.out.println("Exception In Login :  " + ex);
+            ////System.out.println("Exception In Login :  " + ex);
         } finally {
             cado.closeResultSet(rs);
             cado.closeResultSet(resultSet);
@@ -165,13 +165,13 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
     public String applyChangedCounterType() {
         try {
             String getGenericStorageLocation = "select counter_no from pos.branch_counter where counter='" + changedCounterType.trim() + "'";
-            System.out.println("->: 0 - : "+getGenericStorageLocation);
+            //System.out.println("->: 0 - : "+getGenericStorageLocation);
             session.put("loginStorageLocation", cado.Fun_Str(getGenericStorageLocation));
 
             String getGenericCounterNoQuery = "select counter_pk from branch_counter where counter='" + changedCounterType.trim() + "'";
             session.put("LoginCounterId", cado.Fun_Int(getGenericCounterNoQuery));
         } catch (Exception ex) {
-            //System.out.println("Exception in changing generic counter: " + ex);
+            ////System.out.println("Exception in changing generic counter: " + ex);
 //            log.info(ex.getMessage());
         }
         return SUCCESS;
@@ -188,7 +188,7 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
                 if (materialCountValue > 0) {
                     //String loginCraftGroupQuery = "select craft_group from material_master_taxgroup where material_no='" + Txtmaterial.trim() + "'";
                     //@22-11-2014:-String loginStorageLocationQuery = "SELECT Ccounter.storage_location,MmTaxGroup.material_no FROM pos.material_master_taxgroup MmTaxGroup INNER JOIN pos.craft_counter_list Ccounter ON(MmTaxGroup.craft_group =Ccounter.craft_group)WHERE (MmTaxGroup.material_no ='" + Txtmaterial.trim() + "')";
-                    //System.out.println("Inside material check :  " + hiddenNavigatedCounterName);
+                    ////System.out.println("Inside material check :  " + hiddenNavigatedCounterName);
                     validateMaterialCraftGroupQuery = "select craft_group from pos.material_master_taxgroup where material_no='" + Txtmaterial.trim() + "'";
                     isMaterialIdVaild = true;
                     String getCraftGroupQuery = "select craft_group from pos.craft_counter_list where storage_location='" + session.get("loginStorageLocation") + "'";
@@ -211,7 +211,7 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
                 materialCountValue = 0;
             }
         } catch (SQLException ex) {
-            //System.out.println("Exception In Checking Material :  " + ex);
+            ////System.out.println("Exception In Checking Material :  " + ex);
             //log.info(ex.getMessage());
         }
         return SUCCESS;
@@ -222,7 +222,7 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
             String checkingQuery = "select security_answer from user_master where username='" + passwordResetUserName.trim() + "'";
             passwordRefreshedStatus = cado.Fun_Str(checkingQuery).equalsIgnoreCase("null");
         } catch (Exception ex) {
-            //System.out.println("Exception in checking password is refreshed :  " + ex);
+            ////System.out.println("Exception in checking password is refreshed :  " + ex);
 //            log.info(ex.getMessage());
         }
         return SUCCESS;
@@ -250,7 +250,7 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
                 user_password_status = -1;//USERNAME NOT AVAIABLE.
             }
         } catch (Exception ex) {
-            //System.out.println("Exception in reseting password :  " + ex);
+            ////System.out.println("Exception in reseting password :  " + ex);
 //            log.info(ex.getMessage());
         }
         return SUCCESS;
@@ -288,7 +288,7 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
                 displayname = "";
             }
         } catch (Exception ex) {
-            System.out.println("Exception in Checking Session Value   " + ex);
+            //System.out.println("Exception in Checking Session Value   " + ex);
 //            log.info(ex.getMessage());
         }
         return SUCCESS;
@@ -307,7 +307,7 @@ public class UserLogin_Action extends ActionSupport implements SessionAware {
                 forwardPage = "homepage";
             }
         } catch (Exception ex) {
-            System.out.println("Exception in Logout Session " + ex);
+            //System.out.println("Exception in Logout Session " + ex);
             //log.info(ex.getMessage());
         }
         return SUCCESS;

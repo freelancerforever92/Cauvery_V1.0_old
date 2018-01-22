@@ -226,12 +226,9 @@ public class UpdatedCounterWise extends ActionSupport {
                 itemDCSRS2.setVatAmountFloat(vatTotAmt);
 
                 itemDCSRS2.setGstPercentage(gstPercentageTotAmt);       // for GST
-                System.out.println("GST  : %" + gstPercentageTotAmt);
                 itemDCSRS2.setSgstAmountFloat(sgstTotAmt);              // for GST
-                System.out.println("SGST : %" + sgstTotAmt);
                 itemDCSRS2.setCgstAmountFloat(cgstTotAmt);              // for GST
-                System.out.println("CGST : %" + cgstTotAmt);
-
+               
                 itemDCSRS2.setPackAmountFloat(packTotAmt);
                 itemDCSRS2.setCashBillAmountFloat(cashBillTotAmt);
                 itemDCSRS2.setDcsrDate("Total");

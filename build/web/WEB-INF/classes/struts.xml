@@ -8,7 +8,7 @@
     <package name="session" extends="struts-default,json-default">
         <action name="Login" class="com.Action.UserLogin_Action" method="Fun_Login">
             <result name="salesCounterUser">/user_jsp/home.jsp</result>
-            <result name="tenderCounter">/user_jsp/home.jsp</result>
+            <result name="tenderCounterUser">/user_jsp/home.jsp</result>
             <result name="counterBlocked">/index-login.jsp</result>
             <result name="cashCounterUser">/cashbill/cashbill-home.jsp</result>
             <result name="genericCounter">/user_jsp/genericHomePage.jsp</result>
@@ -295,8 +295,14 @@
         <action name="matDetailaction" class="com.Action.Materials" method="materialsList">
             <result type="json"></result>
         </action>
+        <action name="tenderDetailaction" class="com.Action.Tender" method="tenderList">
+            <result type="json"></result>
+        </action>
         <action name="materialUploading" class="com.Action.MeterialUploading" method="Uploading"> 
             <result  name="success">/admin_pages/admin_create_material.jsp?id=1</result>            
+        </action>
+         <action name="tenderUploading" class="com.Action.TenderUploading" method="Uploading"> 
+            <result  name="success">/admin_pages/admin_create_tender.jsp?id=1</result>            
         </action>
         <action name="getMatInfo" class="com.Action.Materials" method="MaterialInfo">
             <result type="json"></result>

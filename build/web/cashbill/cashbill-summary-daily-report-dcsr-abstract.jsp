@@ -100,7 +100,7 @@
                     <display:column property="netAmountFloat" title="Net Amt"  format="{0,number,0.00} "  total="true"/>
 
                     <c:choose>
-                        <c:when test="${head.fromDD le 30 && head.fromMM le 6 || head.fromMM le 06 && head.fromYY le 2017 }">
+                        <c:when test="${head.fromDD le 30 && head.fromYY le 2017 &&( head.fromMM le 6 || head.fromMM le 06 )}">
                             <display:column property="vatAmountFloat" title="VAT Amt"  format="{0,number,0.00} "  total="true"/>
                         </c:when>
                         <c:otherwise>

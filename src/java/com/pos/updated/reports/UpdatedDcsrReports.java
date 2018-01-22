@@ -124,7 +124,7 @@ public class UpdatedDcsrReports extends ActionSupport {
             paraToDate = daoClass.Fun_Str("SELECT SQL_CACHE Date(ADDDATE('" + paraToDate.trim() + "',1))");
 
             String query = "SELECT * FROM pos.report_summary where date_time between ? and ? ";
-            //System.out.println(paraPaymentType + "=-=HELLO DCSR-=>" + query);
+            ////System.out.println(paraPaymentType + "=-=HELLO DCSR-=>" + query);
             if (!paraPaymentType.equalsIgnoreCase("CASH/CARD")) {
                 query = query + " and paymentType=?";
             }
@@ -143,7 +143,7 @@ public class UpdatedDcsrReports extends ActionSupport {
                 CashLineItemDCSR cSR = new CashLineItemDCSR();
                 String xml = rs.getString("xml_document");
                 LineItems items = xTb.xmlToBean(xml);
-
+                //System.out.println("->:: "+rs.getString("sales_orderno"));
                 for (LineItem it : items.getItems()) {
                     grossAmount = grossAmount + Float.parseFloat(it.getPrcValue());
                     discAmount = discAmount + Float.parseFloat(it.getDiscount());
@@ -151,7 +151,6 @@ public class UpdatedDcsrReports extends ActionSupport {
                 }
                 netAmount = grossAmount - discAmount;
                 packAmount = rs.getFloat("pck_charge");
-
                 cSR.setCashInvoiceNumber(rs.getString("sales_orderno") + "-" + rs.getString("paymentType"));
                 cSR.setManualBillNo(rs.getString("manual_bill_no"));
                 cSR.setGrossAmountFloat(grossAmount);
@@ -583,7 +582,7 @@ public class UpdatedDcsrReports extends ActionSupport {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error..!" + e.getMessage());
+            //System.out.println("Error..!" + e.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -596,7 +595,7 @@ public class UpdatedDcsrReports extends ActionSupport {
                     con.close();
                 }
             } catch (Exception e) {
-                System.out.println("Error Closeing : " + e.getMessage());
+                //System.out.println("Error Closeing : " + e.getMessage());
             }
         }
 
